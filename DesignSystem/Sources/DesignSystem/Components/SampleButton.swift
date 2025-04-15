@@ -1,9 +1,9 @@
 import UIKit
 
-class SampleButton: UIButton {
+public final class SampleButton: UIButton {
     private let defaultColor: UIColor
     
-    init(title: String, color: UIColor) {
+    public init(title: String, color: UIColor) {
         self.defaultColor = color
         super.init(frame: .zero)
         setupButton(title: title)
@@ -22,7 +22,7 @@ class SampleButton: UIButton {
         heightAnchor.constraint(equalToConstant: 48).isActive = true
     }
     
-    override var isHighlighted: Bool {
+    public override var isHighlighted: Bool {
         didSet {
             UIView.animate(withDuration: 0.1) {
                 self.backgroundColor = self.isHighlighted ? 

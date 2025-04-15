@@ -1,8 +1,9 @@
 import UIKit
 import SwiftUI
 import DesignSystem
+import Player
 
-class Skill1OnboardingViewController: UIViewController {
+class Skill1OnboardingViewController: BaseViewController {
     
     private let coordinator: OnboardingCoordinator
     private let player = Player()
@@ -94,7 +95,6 @@ class Skill1OnboardingViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .black
         setupLayout()
         loadAudio()
     }

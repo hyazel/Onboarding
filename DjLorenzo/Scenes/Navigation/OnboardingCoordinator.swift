@@ -41,6 +41,8 @@ class OnboardingCoordinator: NSObject, UIPageViewControllerDelegate {
         self.pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         super.init()
         setup()
+        
+        self.pageViewController.view.backgroundColor = .none
     }
     
     func start() {

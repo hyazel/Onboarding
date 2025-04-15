@@ -1,8 +1,7 @@
 import UIKit
 import SwiftUI
-import DesignSystem
 
-class VolumeSlider: UISlider {
+public final class VolumeSlider: UISlider {
     
     override init(frame: CGRect) {
         super.init(frame: frame)

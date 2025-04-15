@@ -1,8 +1,9 @@
 import UIKit
 import SwiftUI
 import DesignSystem
+import Player
 
-class Skill2OnboardingViewController: UIViewController {
+class Skill2OnboardingViewController: BaseViewController {
     
     private let coordinator: OnboardingCoordinator
     private let player = Player()
@@ -13,7 +14,6 @@ class Skill2OnboardingViewController: UIViewController {
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        return scrollView
         return scrollView
     }()
     
@@ -109,7 +109,6 @@ class Skill2OnboardingViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .black
         setupLayout()
         loadAudio()
         startVinylAnimation()

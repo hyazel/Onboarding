@@ -94,6 +94,7 @@ public extension CGFloat {
     /// corner radius of 40 pts
     static var sizeL: CGFloat { .Size.sizeL }
     
+    /// corner radius of 64 pts
     static var sizeXL: CGFloat { .Size.sizeXL }
 
 }

@@ -1,7 +1,7 @@
 import Foundation
 import AudioToolbox
 
-enum Sample: String {
+public enum Sample: String {
     case kick = "kick"
     case snare = "snare"
     case horn = "horn"
@@ -16,8 +16,8 @@ enum Sample: String {
     }
 }
 
-class SamplePlayer {
-    static func play(_ sample: Sample) {
+public class SamplePlayer {
+    public static func play(_ sample: Sample) {
         AudioServicesPlaySystemSound(sample.soundID)
     }
 } 

@@ -8,15 +8,14 @@
 import UIKit
 import DesignSystem
 
-final class WelcomeOnboardingViewController: UIViewController {
-    
+final class WelcomeOnboardingViewController: BaseViewController {
+    // MARK: - Injection
     private let coordinator: OnboardingCoordinator
     
+    // MARK: - UI components
     private let logoImageView: UIImageView = {
         let imageView = UIImageView(image: .logo)
         imageView.contentMode = .scaleAspectFit
-        imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
-        imageView.setContentCompressionResistancePriority(.required, for: .vertical)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -46,10 +45,7 @@ final class WelcomeOnboardingViewController: UIViewController {
         return stack
     }()
     
-    private let gradientLayer: CAGradientLayer = {
-        UIColor.Background.gradientLayer
-    }()
-    
+    // MARK: - Init
     init(coordinator: OnboardingCoordinator) {
         self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
@@ -61,33 +57,31 @@ final class WelcomeOnboardingViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupGradient()
         setupView()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        gradientLayer.frame = view.bounds
         let availableSpace = bottomStack.frame.minY
         logoImageView.center.y = availableSpace / 2
     }
-    
-    private func setupGradient() {
-        view.layer.insertSublayer(gradientLayer, at: 0)
-    }
-    
-    private func setupView() {
+}
+
+// MARK: - UI Setup
+private extension WelcomeOnboardingViewController {
+    func setupView() {
         view.addSubview(logoImageView)
         view.addSubview(bottomStack)
         
         NSLayoutConstraint.activate([
             // Bottom stack
-            bottomStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: .spacingXL),
-            bottomStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -.spacingXL),
+            bottomStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: .spacingXL),
+            bottomStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -.spacingXL),
             bottomStack.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -56),
             
             // Logo
             logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            logoImageView.heightAnchor.constraint(equalToConstant: .sizeXL),
         ])
     }
 }
