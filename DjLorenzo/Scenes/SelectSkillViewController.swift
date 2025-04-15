@@ -10,9 +10,12 @@ import SwiftUI
 import DesignSystem
 
 class SelectSkillViewController: UIViewController {
+    // MARK: - Injection
+    // TODO
     private let userRepository = UserRepository.shared
-    
     private let coordinator: OnboardingCoordinator
+    
+    // MARK: - UI components
     private let radioGroup: RadioGroup
     
     private let scrollView: UIScrollView = {
@@ -79,6 +82,7 @@ class SelectSkillViewController: UIViewController {
         return stackView
     }()
     
+    // MARK: - Init
     init(coordinator: OnboardingCoordinator) {
         self.coordinator = coordinator
         self.radioGroup = RadioGroup(options: DJLevel.allCases.map { $0.rawValue })
@@ -96,7 +100,12 @@ class SelectSkillViewController: UIViewController {
         setupLayout()
     }
     
-    private func setupLayout() {
+    
+}
+
+// MARK: - UI Setup
+private extension SelectSkillViewController {
+    func setupLayout() {
         view.addSubview(scrollView)
         view.addSubview(continueButton)
         scrollView.addSubview(stackView)
@@ -104,19 +113,20 @@ class SelectSkillViewController: UIViewController {
         NSLayoutConstraint.activate([
             // ScrollView constraints
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: continueButton.topAnchor, constant: -32),
             
             // StackView constraints
-            stackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor, constant: 20),
-            stackView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor, constant: -20),
-            stackView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor, constant: -40),
+            stackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor, constant: .spacingXL),
+            stackView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor, constant: -.spacingXL),
+            stackView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor,
+                                             constant: -2 * CGFloat.spacingXL),
             
             // Continue button constraints
-            continueButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            continueButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            continueButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -56),
+            continueButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: .spacingXL),
+            continueButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -.spacingXL),
+            continueButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -2 * CGFloat.spacingXL),
             continueButton.heightAnchor.constraint(equalToConstant: 50),
             
             // Radio group width
@@ -145,7 +155,6 @@ class SelectSkillViewController: UIViewController {
         stackView.bottomAnchor.constraint(lessThanOrEqualTo: scrollView.contentLayoutGuide.bottomAnchor).isActive = true
     }
 }
-
 // MARK: - RadioGroupDelegate
 extension SelectSkillViewController: RadioGroupDelegate {
     func radioGroup(_ radioGroup: RadioGroup, didSelectOption title: String) {

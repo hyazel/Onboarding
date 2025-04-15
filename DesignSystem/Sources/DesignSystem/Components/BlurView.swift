@@ -27,7 +27,7 @@ struct BlurView: View {
                      minHeight: 300).border(.red)
 }
 
-func makeBlurUIView() -> UIView {
+public func makeBlurUIView() -> UIView {
     let blurView = BlurView()
     let hostingController = UIHostingController(rootView: blurView)
     return hostingController.view

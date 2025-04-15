@@ -1,8 +1,9 @@
 import UIKit
 import SwiftUI
 import DesignSystem
+import Player
 
-class Skill3OnboardingViewController: UIViewController {
+class Skill3OnboardingViewController: BaseViewController {
     
     private let coordinator: OnboardingCoordinator
     private let player = Player()
@@ -74,7 +75,6 @@ class Skill3OnboardingViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .black
         
         let blurUIView = makeBlurUIView()
             blurUIView.translatesAutoresizingMaskIntoConstraints = false
@@ -98,9 +98,12 @@ class Skill3OnboardingViewController: UIViewController {
         
         blurUIView.alpha = 0
         
-        UIView.animate(withDuration: 15.0) {
-            blurUIView.alpha = 0.5
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            UIView.animate(withDuration: 15.0) {
+                blurUIView.alpha = 0.5
+            }
         }
+        
         
         // Réactiver le bouton après 15 secondes
         DispatchQueue.main.asyncAfter(deadline: .now() + 15.0) { [weak self] in

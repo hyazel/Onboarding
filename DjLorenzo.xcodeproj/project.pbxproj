@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		F955FDC32DAD1C0400F582C3 /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = F955FDC22DAD1C0400F582C3 /* DesignSystem */; };
+		F9C5B9052DADA4FD005A534A /* Player in Frameworks */ = {isa = PBXBuildFile; productRef = F9C5B9042DADA4FD005A534A /* Player */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,6 +33,7 @@
 		F971638E2DAA97A10005C0B2 /* DjLorenzo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DjLorenzo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F97163A42DAA97A20005C0B2 /* DjLorenzoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DjLorenzoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F97163AE2DAA97A20005C0B2 /* DjLorenzoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DjLorenzoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9C5B9032DADA4C2005A534A /* Player */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Player; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -71,6 +73,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F955FDC32DAD1C0400F582C3 /* DesignSystem in Frameworks */,
+				F9C5B9052DADA4FD005A534A /* Player in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,6 +104,7 @@
 		F97163852DAA97A10005C0B2 = {
 			isa = PBXGroup;
 			children = (
+				F9C5B9032DADA4C2005A534A /* Player */,
 				F955FDC02DAD104D00F582C3 /* DesignSystem */,
 				F97163902DAA97A10005C0B2 /* DjLorenzo */,
 				F97163A72DAA97A20005C0B2 /* DjLorenzoTests */,
@@ -141,6 +145,7 @@
 			name = DjLorenzo;
 			packageProductDependencies = (
 				F955FDC22DAD1C0400F582C3 /* DesignSystem */,
+				F9C5B9042DADA4FD005A534A /* Player */,
 			);
 			productName = DjLorenzo;
 			productReference = F971638E2DAA97A10005C0B2 /* DjLorenzo.app */;
@@ -592,6 +597,10 @@
 		F955FDC22DAD1C0400F582C3 /* DesignSystem */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DesignSystem;
+		};
+		F9C5B9042DADA4FD005A534A /* Player */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Player;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

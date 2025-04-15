@@ -1,9 +1,13 @@
 import Foundation
 import AVFoundation
 
-class Player {
+public final class Player {
     private var audioPlayer: AVAudioPlayer?
     
+    public init() {}
+}
+
+public extension Player {
     var volume: Float {
         get { audioPlayer?.volume ?? 0 }
         set { audioPlayer?.volume = newValue }
@@ -14,7 +18,7 @@ class Player {
     }
     
     func loadTrack(named name: String, extension ext: String = "mp3") throws {
-        guard let url = Bundle.main.url(forResource: name, withExtension: ext) else {
+        guard let url = Bundle.module.url(forResource: name, withExtension: ext) else {
             throw PlayerError.trackNotFound
         }
         

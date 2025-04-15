@@ -1,11 +1,11 @@
 import UIKit
 
-protocol RadioGroupDelegate: AnyObject {
+public protocol RadioGroupDelegate: AnyObject {
     func radioGroup(_ radioGroup: RadioGroup, didSelectOption option: String)
 }
 
-class RadioGroup: UIView {
-    weak var delegate: RadioGroupDelegate?
+public class RadioGroup: UIView {
+    public weak var delegate: RadioGroupDelegate?
     private var radioButtons: [RadioButton] = []
     private let stackView: UIStackView = {
         let stack = UIStackView()
@@ -16,7 +16,7 @@ class RadioGroup: UIView {
         return stack
     }()
     
-    init(options: [String]) {
+    public init(options: [String]) {
         super.init(frame: .zero)
         setupRadioButtons(with: options)
         setupLayout()

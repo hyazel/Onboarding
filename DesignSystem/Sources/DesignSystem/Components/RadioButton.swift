@@ -1,6 +1,6 @@
 import UIKit
 
-class RadioButton: UIControl {
+public class RadioButton: UIControl {
     
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -33,7 +33,7 @@ class RadioButton: UIControl {
         }
     }
     
-    override var isSelected: Bool {
+    public override var isSelected: Bool {
         didSet {
             updateSelection()
         }
