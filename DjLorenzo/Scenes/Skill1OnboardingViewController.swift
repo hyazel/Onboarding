@@ -2,13 +2,17 @@ import UIKit
 import SwiftUI
 import DesignSystem
 import Player
+import Factory
 
 class Skill1OnboardingViewController: BaseViewController {
-    
+    // MARK: - Injection
     private let coordinator: OnboardingCoordinator
-    private let player = Player()
+    @Injected(\PlayerContainer.player) private var player
+    
+    // MARK: - Local variables
     private var hasReachedMaxVolume = false
     
+    // MARK: - UI components
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -84,6 +88,7 @@ class Skill1OnboardingViewController: BaseViewController {
         return rotation
     }()
     
+    // MARK: - Init and view lifecycle
     init(coordinator: OnboardingCoordinator) {
         self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
@@ -99,7 +104,16 @@ class Skill1OnboardingViewController: BaseViewController {
         loadAudio()
     }
     
-    private func setupLayout() {
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        player.stop()
+        stopVinylAnimation()
+    }
+}
+
+// MARK: - UI setup
+private extension Skill1OnboardingViewController {
+    func setupLayout() {
         view.addSubview(scrollView)
         view.addSubview(continueButton)
         scrollView.addSubview(stackView)
@@ -112,14 +126,14 @@ class Skill1OnboardingViewController: BaseViewController {
             scrollView.bottomAnchor.constraint(equalTo: continueButton.topAnchor, constant: -32),
             
             // StackView constraints
-            stackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor, constant: 20),
-            stackView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor, constant: -20),
-            stackView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor, constant: -40),
+            stackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor, constant: .spacingXL),
+            stackView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor, constant: -.spacingXL),
+            stackView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor, constant: -2 * CGFloat.spacingXL),
             
             // Continue button constraints
-            continueButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-            continueButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-            continueButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -56),
+            continueButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: .spacingXL),
+            continueButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -.spacingXL),
+            continueButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -2 * CGFloat.spacingXL),
             continueButton.heightAnchor.constraint(equalToConstant: 50),
             
             // Vinyl size
@@ -137,12 +151,10 @@ class Skill1OnboardingViewController: BaseViewController {
             subtitleLabel.trailingAnchor.constraint(equalTo: stackView.trailingAnchor)
         ])
         
-        // Center vertically with scroll if content is smaller
         let centerY = stackView.centerYAnchor.constraint(equalTo: scrollView.centerYAnchor)
         centerY.priority = .defaultLow
         centerY.isActive = true
         
-        // Make sure content fills scroll view height if smaller
         let height = stackView.heightAnchor.constraint(equalTo: scrollView.heightAnchor)
         height.priority = .defaultLow - 1
         height.isActive = true
@@ -151,8 +163,11 @@ class Skill1OnboardingViewController: BaseViewController {
         stackView.topAnchor.constraint(greaterThanOrEqualTo: scrollView.contentLayoutGuide.topAnchor).isActive = true
         stackView.bottomAnchor.constraint(lessThanOrEqualTo: scrollView.contentLayoutGuide.bottomAnchor).isActive = true
     }
-    
-    private func loadAudio() {
+}
+
+// MARK: - Player actions
+private extension Skill1OnboardingViewController {
+    func loadAudio() {
         do {
             try player.loadTrack(named: "track")
             player.play()
@@ -162,17 +177,7 @@ class Skill1OnboardingViewController: BaseViewController {
         }
     }
     
-    private func startVinylAnimation() {
-        let duration = volumeSlider.value == 0 ? 0 : max(8 - (volumeSlider.value * 6), 2)
-        vinylRotationAnimation.duration = CFTimeInterval(duration)
-        vinylImageView.layer.add(vinylRotationAnimation, forKey: "rotationAnimation")
-    }
-    
-    private func stopVinylAnimation() {
-        vinylImageView.layer.removeAnimation(forKey: "rotationAnimation")
-    }
-    
-    @objc private func volumeChanged(_ sender: UISlider) {
+    @objc func volumeChanged(_ sender: UISlider) {
         let roundedValue = round(sender.value * 10) / 10
         sender.value = roundedValue
         player.volume = roundedValue
@@ -183,8 +188,21 @@ class Skill1OnboardingViewController: BaseViewController {
         }
         continueButton.isEnabled = hasReachedMaxVolume
     }
+}
+
+// MARK: - Animations
+private extension Skill1OnboardingViewController {
+    func startVinylAnimation() {
+        let duration = volumeSlider.value == 0 ? 0 : max(8 - (volumeSlider.value * 6), 2)
+        vinylRotationAnimation.duration = CFTimeInterval(duration)
+        vinylImageView.layer.add(vinylRotationAnimation, forKey: "rotationAnimation")
+    }
     
-    private func animateTextChange() {
+    func stopVinylAnimation() {
+        vinylImageView.layer.removeAnimation(forKey: "rotationAnimation")
+    }
+    
+    func animateTextChange() {
         UIView.animate(withDuration: 0.3, animations: {
             self.titleLabel.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
             self.titleLabel.alpha = 0
@@ -201,12 +219,6 @@ class Skill1OnboardingViewController: BaseViewController {
                 self.subtitleLabel.alpha = 1
             }
         }
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        player.stop()
-        stopVinylAnimation()
     }
 }
 

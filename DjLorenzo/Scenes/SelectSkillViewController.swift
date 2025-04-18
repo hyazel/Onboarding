@@ -8,11 +8,11 @@
 import UIKit
 import SwiftUI
 import DesignSystem
+import Factory
 
 class SelectSkillViewController: UIViewController {
     // MARK: - Injection
-    // TODO
-    private let userRepository = UserRepository.shared
+    @Injected(\RepositoryContainer.userRepository) private var userRepository
     private let coordinator: OnboardingCoordinator
     
     // MARK: - UI components
@@ -159,7 +159,7 @@ private extension SelectSkillViewController {
 extension SelectSkillViewController: RadioGroupDelegate {
     func radioGroup(_ radioGroup: RadioGroup, didSelectOption title: String) {
         if let level = DJLevel(rawValue: title) {
-            UserRepository.shared.saveDJLevel(level)
+            userRepository.saveDJLevel(level)
             continueButton.isEnabled = true
         }
     }

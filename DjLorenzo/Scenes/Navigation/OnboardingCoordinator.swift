@@ -7,6 +7,7 @@
 
 import UIKit
 import SwiftUI
+import Factory
 
 class OnboardingCoordinator: NSObject, UIPageViewControllerDelegate {
     
@@ -34,7 +35,7 @@ class OnboardingCoordinator: NSObject, UIPageViewControllerDelegate {
         selectSkillViewController
     ]
     
-    private let userRepository = UserRepository.shared
+    @Injected(\RepositoryContainer.userRepository) private var userRepository
     
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
@@ -116,7 +117,3 @@ extension OnboardingCoordinator {
         navigationController.present(alert, animated: true)
     }
 }
-
-//#Preview {
-//    ViewControllerView(viewController: OnBoardingLogoViewController(coordinator: <#OnboardingCoordinator#>))
-//}

@@ -6,15 +6,21 @@ enum DJLevel: String, CaseIterable {
     case professional = "I'm a professional DJ"
 }
 
-class UserRepository {
+
+protocol UserRepository {
+    func saveDJLevel(_ level: DJLevel)
+    func getDJLevel() -> DJLevel?
+    func clearDJLevel()
+}
+
+class UserRepositoryImpl: UserRepository {
     private enum Keys {
         static let djLevel = "user_dj_level"
     }
     
-    static let shared = UserRepository()
     private let defaults = UserDefaults.standard
     
-    private init() {}
+    init() {}
     
     func saveDJLevel(_ level: DJLevel) {
         defaults.set(level.rawValue, forKey: Keys.djLevel)
