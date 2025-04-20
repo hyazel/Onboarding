@@ -154,14 +154,14 @@ private extension Skill2OnboardingViewController {
             scrollView.bottomAnchor.constraint(equalTo: continueButton.topAnchor, constant: -32),
             
             // StackView constraints
-            stackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor, constant: 20),
-            stackView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor, constant: -20),
-            stackView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor, constant: -40),
+            stackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor, constant: .spacingXL),
+            stackView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor, constant: -CGFloat.spacingXL),
+            stackView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor, constant: -2 * CGFloat.spacingXL),
             
             // Continue button constraints
-            continueButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            continueButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            continueButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -56),
+            continueButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: .spacingXL),
+            continueButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -CGFloat.spacingXL),
+            continueButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -2 * CGFloat.spacingXL),
             continueButton.heightAnchor.constraint(equalToConstant: 50),
             
             // Vinyl size

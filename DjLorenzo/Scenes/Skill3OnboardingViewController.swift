@@ -98,6 +98,7 @@ class Skill3OnboardingViewController: BaseViewController {
         playIntroSample()
         animateLights()
         continueButtonAnimation()
+        animateTextAfterDelay()
     }
     
     override func viewDidLayoutSubviews() {
@@ -113,11 +114,11 @@ class Skill3OnboardingViewController: BaseViewController {
 // MARK: - UI setup
 private extension Skill3OnboardingViewController {
     func setupLayout() {
+        view.addSubview(blurLightView)
         view.addSubview(scrollView)
         view.addSubview(continueButton)
         scrollView.addSubview(stackView)
         
-        view.addSubview(blurLightView)
         
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -125,13 +126,13 @@ private extension Skill3OnboardingViewController {
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: continueButton.topAnchor, constant: -32),
             
-            stackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor, constant: 20),
-            stackView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor, constant: -20),
-            stackView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor, constant: -40),
+            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 0),
+            stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: 0),
+            stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: 0),
             
-            continueButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            continueButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            continueButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -56),
+            continueButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: CGFloat.spacingXL),
+            continueButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -CGFloat.spacingXL),
+            continueButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -2 * CGFloat.spacingXL),
             continueButton.heightAnchor.constraint(equalToConstant: 50),
             
             djDeckImageView.heightAnchor.constraint(equalToConstant: 300),
@@ -173,6 +174,31 @@ private extension Skill3OnboardingViewController {
             self?.continueButton.isEnabled = true
         }
     }
+    
+    func animateTextAfterDelay() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 15) { [weak self] in
+            self?.animateTextChange()
+        }
+    }
+    
+    func animateTextChange() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.titleLabel.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+            self.titleLabel.alpha = 0
+            self.subtitleLabel.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+            self.subtitleLabel.alpha = 0
+        }) { _ in
+            self.titleLabel.text = "This is it"
+            self.subtitleLabel.text = "Make them dance"
+            
+            UIView.animate(withDuration: 0.3) {
+                self.titleLabel.transform = .identity
+                self.titleLabel.alpha = 1
+                self.subtitleLabel.transform = .identity
+                self.subtitleLabel.alpha = 1
+            }
+        }
+    }
 }
 
 // MARK: - Player
@@ -187,5 +213,3 @@ private extension Skill3OnboardingViewController {
 #Preview {
     Skill3OnboardingViewController()
 }
-
-

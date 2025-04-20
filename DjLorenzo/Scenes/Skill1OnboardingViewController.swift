@@ -185,11 +185,9 @@ private extension Skill1OnboardingViewController {
     }
     
     @objc func volumeChanged(_ sender: UISlider) {
-        let roundedValue = round(sender.value * 10) / 10
-        sender.value = roundedValue
-        player.volume = roundedValue
+        player.volume = sender.value
         
-        if roundedValue >= 1.0 && !hasReachedMaxVolume {
+        if sender.value >= 1.0 && !hasReachedMaxVolume {
             hasReachedMaxVolume = true
             animateTextChange()
         }

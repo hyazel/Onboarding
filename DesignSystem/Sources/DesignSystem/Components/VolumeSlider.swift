@@ -39,7 +39,7 @@ public final class VolumeSlider: UISlider {
         
         // Draw track background
         let context = UIGraphicsGetCurrentContext()
-        context?.setFillColor(UIColor.gray.cgColor)
+        context?.setFillColor(UIColor.Background.primary.cgColor)
         let trackPath = UIBezierPath(roundedRect: trackRect, cornerRadius: .radiusS)
         trackPath.fill()
         
@@ -50,14 +50,29 @@ public final class VolumeSlider: UISlider {
         setMaximumTrackImage(trackImage, for: .normal)
         
         // Custom thumb
-        let thumbWidth: CGFloat = 8
+        let thumbWidth: CGFloat = 24
         let thumbHeight: CGFloat = trackHeight + 8
         let thumbSize = CGSize(width: thumbWidth, height: thumbHeight)
         let thumbRect = CGRect(origin: .zero, size: thumbSize)
         
         UIGraphicsBeginImageContextWithOptions(thumbSize, false, 0.0)
+        
+        // Draw thumb background
         UIColor.lightGray.setFill()
         UIBezierPath(roundedRect: thumbRect, cornerRadius: thumbWidth/2).fill()
+        
+        // Draw white capsule
+        let capsuleWidth: CGFloat = 4
+        let capsuleHeight: CGFloat = thumbHeight - 16
+        let capsuleRect = CGRect(
+            x: (thumbWidth - capsuleWidth) / 2,
+            y: (thumbHeight - capsuleHeight) / 2,
+            width: capsuleWidth,
+            height: capsuleHeight
+        )
+        UIColor.white.setFill()
+        UIBezierPath(roundedRect: capsuleRect, cornerRadius: capsuleWidth/2).fill()
+        
         let thumbImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         

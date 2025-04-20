@@ -14,6 +14,7 @@ public extension UIColor {
     }
     
     enum Background {
+        public static let primary = UIColor(resource: .neutral140)
         public static let accentPrimary = UIColor(resource: .blue100)
         public static let inverted = UIColor(resource: .neutral00)
         @MainActor public static let gradientLayer: CAGradientLayer = {
