@@ -91,12 +91,17 @@ public class RadioButton: UIControl {
     }
     
     private func updateSelection() {
-        radioCircle.backgroundColor = isSelected ? .systemBlue : .clear
-        radioCircle.layer.borderColor = (isSelected ? UIColor.systemBlue : UIColor.systemGray).cgColor
-        checkmarkImageView.isHidden = !isSelected
-        
-        layer.borderWidth = isSelected ? 1 : 0
-        layer.borderColor = UIColor.systemBlue.cgColor
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut) {
+            self.radioCircle.backgroundColor = self.isSelected ? .systemBlue : .clear
+            self.radioCircle.layer.borderColor = (self.isSelected ? UIColor.systemBlue : UIColor.systemGray).cgColor
+            self.checkmarkImageView.isHidden = !self.isSelected
+            
+            self.layer.borderWidth = self.isSelected ? 1 : 0
+            self.layer.borderColor = UIColor.systemBlue.cgColor
+            
+            // Animation de scale pour le bouton sélectionné
+            self.transform = self.isSelected ? CGAffineTransform(scaleX: 1.02, y: 1.02) : .identity
+        }
     }
     
     @objc private func handleTap() {
