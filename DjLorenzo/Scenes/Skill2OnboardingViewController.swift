@@ -1,16 +1,27 @@
+//
+//  Skill2OnboardingViewController.swift
+//  DjLorenzo
+//
+//  Created by Laurent Droguet on 12/04/2025.
+//
+
 import UIKit
 import SwiftUI
 import DesignSystem
 import Player
+import Factory
 
-class Skill2OnboardingViewController: BaseViewController {
+final class Skill2OnboardingViewController: BaseViewController {
+    // MARK: - Injection
+    @WeakLazyInjected(\NavigationContainer.onBoardingCoordinator) private var coordinator
+    @Injected(\PlayerContainer.player) private var player
     
-    private let coordinator: OnboardingCoordinator
-    private let player = Player()
+    // MARK: - Local variables
     private var hasPlayedSample = false
     private var hasReachedHalfVolume = false
     private var hasAnimatedText = false
     
+    // MARK: - UI components
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -66,7 +77,7 @@ class Skill2OnboardingViewController: BaseViewController {
     
     private lazy var continueButton: UIButton = {
         let button = PrimaryButtonFactory.makeContinueButton {
-            self.coordinator.nextPage()
+            self.coordinator?.nextPage()
         }
         button.setTitle("Done", for: .normal)
         return button
@@ -93,13 +104,13 @@ class Skill2OnboardingViewController: BaseViewController {
         rotation.toValue = NSNumber(value: Double.pi * 2)
         rotation.duration = 3
         rotation.isCumulative = true
-        rotation.repeatCount = Float.infinity
+        rotation.repeatCount = .infinity
         rotation.timingFunction = CAMediaTimingFunction(name: .linear)
         return rotation
     }()
     
-    init(coordinator: OnboardingCoordinator) {
-        self.coordinator = coordinator
+    // MARK: - Init & lifecycle
+    init() {
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -114,14 +125,23 @@ class Skill2OnboardingViewController: BaseViewController {
         startVinylAnimation()
         continueButton.isEnabled = false
     }
-    
-    private func createSampleButton(title: String, color: UIColor, action: Selector) -> UIButton {
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        player.stop()
+        stopVinylAnimation()
+    }
+}
+
+// MARK: - UI setup
+private extension Skill2OnboardingViewController {
+    func createSampleButton(title: String, color: UIColor, action: Selector) -> UIButton {
         let button = SampleButton(title: title, color: color)
         button.addTarget(self, action: action, for: .touchUpInside)
         return button
     }
     
-    private func setupLayout() {
+    func setupLayout() {
         view.addSubview(scrollView)
         view.addSubview(continueButton)
         scrollView.addSubview(stackView)
@@ -176,64 +196,10 @@ class Skill2OnboardingViewController: BaseViewController {
         stackView.topAnchor.constraint(greaterThanOrEqualTo: scrollView.contentLayoutGuide.topAnchor).isActive = true
         stackView.bottomAnchor.constraint(lessThanOrEqualTo: scrollView.contentLayoutGuide.bottomAnchor).isActive = true
     }
-    
-    private func loadAudio() {
-        do {
-            try player.loadTrack(named: "track")
-            player.play()
-            player.volume = volumeSlider.value
-        } catch {
-            print("Failed to load audio:", error)
-        }
-    }
-    
-    private func startVinylAnimation() {
-        vinylImageView.layer.add(vinylRotationAnimation, forKey: "rotationAnimation")
-    }
-    
-    private func stopVinylAnimation() {
-        vinylImageView.layer.removeAnimation(forKey: "rotationAnimation")
-    }
-    
-    @objc private func volumeChanged(_ sender: UISlider) {
-        let roundedValue = round(sender.value * 10) / 10
-        sender.value = roundedValue
-        player.volume = roundedValue
-        
-        if roundedValue > 0.5 {
-            hasReachedHalfVolume = true
-        }
-        updateContinueButtonState()
-    }
-    
-    private func updateContinueButtonState() {
-        let shouldBeEnabled = hasReachedHalfVolume || hasPlayedSample
-        continueButton.isEnabled = shouldBeEnabled
-        
-        if shouldBeEnabled && !hasAnimatedText {
-            hasAnimatedText = true
-            animateTextChange()
-        }
-    }
-    
-    private func animateTextChange() {
-        UIView.animate(withDuration: 0.3, animations: {
-            self.titleLabel.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-            self.titleLabel.alpha = 0
-            self.subtitleLabel.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-            self.subtitleLabel.alpha = 0
-        }) { _ in
-            self.titleLabel.text = "Yeah"
-            self.subtitleLabel.text = "You've made your first DJ move"
-            
-            UIView.animate(withDuration: 0.3) {
-                self.titleLabel.transform = .identity
-                self.titleLabel.alpha = 1
-                self.subtitleLabel.transform = .identity
-                self.subtitleLabel.alpha = 1
-            }
-        }
-    }
+}
+
+// MARK: - Player
+private extension Skill2OnboardingViewController {
     
     @objc private func playHorn() {
         SamplePlayer.play(.horn)
@@ -253,13 +219,68 @@ class Skill2OnboardingViewController: BaseViewController {
         updateContinueButtonState()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        player.stop()
-        stopVinylAnimation()
+    @objc private func volumeChanged(_ sender: UISlider) {
+        let roundedValue = round(sender.value * 10) / 10
+        sender.value = roundedValue
+        player.volume = roundedValue
+        
+        if roundedValue > 0.5 {
+            hasReachedHalfVolume = true
+        }
+        updateContinueButtonState()
+    }
+    
+    func loadAudio() {
+        do {
+            try player.loadTrack(named: "track")
+            player.play()
+            player.volume = volumeSlider.value
+        } catch {
+            print("Failed to load audio:", error)
+        }
+    }
+}
+
+// MARK: - Animations
+private extension Skill2OnboardingViewController {
+    func startVinylAnimation() {
+        vinylImageView.layer.add(vinylRotationAnimation, forKey: "rotationAnimation")
+    }
+    
+    func stopVinylAnimation() {
+        vinylImageView.layer.removeAnimation(forKey: "rotationAnimation")
+    }
+    
+    func updateContinueButtonState() {
+        let shouldBeEnabled = hasReachedHalfVolume || hasPlayedSample
+        continueButton.isEnabled = shouldBeEnabled
+        
+        if shouldBeEnabled && !hasAnimatedText {
+            hasAnimatedText = true
+            animateTextChange()
+        }
+    }
+    
+    func animateTextChange() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.titleLabel.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+            self.titleLabel.alpha = 0
+            self.subtitleLabel.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+            self.subtitleLabel.alpha = 0
+        }) { _ in
+            self.titleLabel.text = "Yeah"
+            self.subtitleLabel.text = "You've made your first DJ move"
+            
+            UIView.animate(withDuration: 0.3) {
+                self.titleLabel.transform = .identity
+                self.titleLabel.alpha = 1
+                self.subtitleLabel.transform = .identity
+                self.subtitleLabel.alpha = 1
+            }
+        }
     }
 }
 
 #Preview {
-    Skill2OnboardingViewController(coordinator: OnboardingCoordinator(navigationController: UINavigationController()))
+    Skill2OnboardingViewController()
 } 

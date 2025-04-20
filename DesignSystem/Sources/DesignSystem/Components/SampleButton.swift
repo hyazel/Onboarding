@@ -1,3 +1,10 @@
+//
+//  SampleButton.swift
+//  DjLorenzo
+//
+//  Created by Laurent Droguet on 14/04/2025.
+//
+
 import UIKit
 
 public final class SampleButton: UIButton {

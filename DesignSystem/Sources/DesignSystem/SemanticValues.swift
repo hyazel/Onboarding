@@ -24,12 +24,12 @@ extension CGFloat {
         static let radius2XS: CGFloat = 2.0
         static let radiusXS: CGFloat = 4.0
         static let radiusS: CGFloat = 8.0
-        static let radiusL: CGFloat = 16.0
+        static let radiusL: CGFloat = 12.0
     }
     
     enum Size {
         static let size2XS: CGFloat = 8.0
-        static let sizeXS: CGFloat = 16.0
+        static let sizeXS: CGFloat = 12.0
         static let sizeS: CGFloat = 24.0
         static let sizeL: CGFloat = 40.0
         static let sizeXL: CGFloat = 64.0
@@ -75,26 +75,26 @@ public extension CGFloat {
     /// corner radius of 8 pts
     static var radiusS: CGFloat { .CornerRadius.radiusS }
 
-    /// corner radius of 16 pts
+    /// corner radius of 12 pts
     static var radiusL: CGFloat { .CornerRadius.radiusL }
 
 }
 
 public extension CGFloat {
 
-    /// corner radius of 8 pts
+    /// size of 8 pts
     static var size2XS: CGFloat { .Size.size2XS }
 
-    /// corner radius of 16 pts
+    /// size of 16 pts
     static var sizeXS: CGFloat { .Size.sizeXS }
 
-    /// corner radius of 24 pts
+    /// size of 24 pts
     static var sizeS: CGFloat { .Size.sizeS }
     
-    /// corner radius of 40 pts
+    /// size of 40 pts
     static var sizeL: CGFloat { .Size.sizeL }
     
-    /// corner radius of 64 pts
+    /// size of 64 pts
     static var sizeXL: CGFloat { .Size.sizeXL }
 
 }

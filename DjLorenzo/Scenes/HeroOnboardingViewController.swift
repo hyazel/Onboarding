@@ -8,10 +8,11 @@
 import UIKit
 import SwiftUI
 import DesignSystem
+import Factory
 
-class HeroOnboardingViewController: BaseViewController {
+final class HeroOnboardingViewController: BaseViewController {
     // MARK: - Injection
-    private let coordinator: OnboardingCoordinator
+    @WeakLazyInjected(\NavigationContainer.onBoardingCoordinator) private var coordinator
     
     // MARK: - UI
     private let scrollView: UIScrollView = {
@@ -54,7 +55,7 @@ class HeroOnboardingViewController: BaseViewController {
     
     private lazy var continueButton: UIButton = {
         PrimaryButtonFactory.makeContinueButton {
-            self.coordinator.nextPage()
+            self.coordinator?.nextPage()
         }
     }()
     
@@ -73,8 +74,7 @@ class HeroOnboardingViewController: BaseViewController {
     }()
     
     // MARK: - Init
-    init(coordinator: OnboardingCoordinator) {
-        self.coordinator = coordinator
+    init() {
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -140,5 +140,5 @@ private extension HeroOnboardingViewController {
     }
 }
 #Preview {
-    HeroOnboardingViewController(coordinator: OnboardingCoordinator(navigationController: UINavigationController()))
+    HeroOnboardingViewController()
 }

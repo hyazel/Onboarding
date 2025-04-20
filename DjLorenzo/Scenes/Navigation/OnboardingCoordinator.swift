@@ -8,26 +8,31 @@
 import UIKit
 import SwiftUI
 import Factory
+import DataDomain
+import DesignSystem
 
-class OnboardingCoordinator: NSObject, UIPageViewControllerDelegate {
+final class OnboardingCoordinator: UINavigationController, UIPageViewControllerDelegate {
+    // MARK: - Injection
+    @Injected(\RepositoryContainer.userRepository) private var userRepository
     
+    // MARK: - UIC components
     private let pageViewController: UIPageViewController
-    private let navigationController: UINavigationController
+//    private let navigationController: UINavigationController
     private let pageControl: UIPageControl = {
         let pc = UIPageControl()
-        pc.currentPageIndicatorTintColor = .systemBlue
-        pc.pageIndicatorTintColor = .systemGray
+        pc.currentPageIndicatorTintColor = UIColor.Background.accentPrimary
+        pc.pageIndicatorTintColor = UIColor.Background.inverted
         pc.translatesAutoresizingMaskIntoConstraints = false
         pc.isUserInteractionEnabled = false
         return pc
     }()
     
-    private lazy var welcomeViewController = WelcomeOnboardingViewController(coordinator: self)
-    private lazy var logoViewController = HeroOnboardingViewController(coordinator: self)
-    private lazy var selectSkillViewController = SelectSkillViewController(coordinator: self)
-    private lazy var skill1OnboardingViewController = Skill1OnboardingViewController(coordinator: self)
-    private lazy var skill2OnboardingViewController = Skill2OnboardingViewController(coordinator: self)
-    private lazy var skill3OnboardingViewController = Skill3OnboardingViewController(coordinator: self)
+    private lazy var welcomeViewController = WelcomeOnboardingViewController()
+    private lazy var logoViewController = HeroOnboardingViewController()
+    private lazy var selectSkillViewController = SelectSkillViewController()
+    private lazy var skill1OnboardingViewController = Skill1OnboardingViewController()
+    private lazy var skill2OnboardingViewController = Skill2OnboardingViewController()
+    private lazy var skill3OnboardingViewController = Skill3OnboardingViewController()
     
     private lazy var pages: [UIViewController] = [
         welcomeViewController,
@@ -35,31 +40,42 @@ class OnboardingCoordinator: NSObject, UIPageViewControllerDelegate {
         selectSkillViewController
     ]
     
-    @Injected(\RepositoryContainer.userRepository) private var userRepository
-    
-    init(navigationController: UINavigationController) {
-        self.navigationController = navigationController
+    // MARK: - Init & lifecycle
+    init() {
         self.pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
-        super.init()
+        super.init(nibName: nil, bundle: nil)
         setup()
         
         self.pageViewController.view.backgroundColor = .none
     }
     
-    func start() {
-        navigationController.setViewControllers([pageViewController], animated: false)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        self.pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        setup()
+        
+        self.pageViewController.view.backgroundColor = .none
+    }
+}
+
+// MARK: - Page Control
+private extension OnboardingCoordinator {
+    func setup() {
+        pageViewController.dataSource = nil
+        pageViewController.delegate = self
+        
+        setViewControllers([pageViewController], animated: false)
         if let firstVC = pages.first {
             pageViewController.setViewControllers([firstVC], direction: .forward, animated: false)
         }
         setupPageControl()
     }
     
-    private func setup() {
-        pageViewController.dataSource = nil
-        pageViewController.delegate = self
-    }
-    
-    private func setupPageControl() {
+    func setupPageControl() {
         pageControl.numberOfPages = 4
         pageControl.currentPage = 0
         
@@ -71,7 +87,7 @@ class OnboardingCoordinator: NSObject, UIPageViewControllerDelegate {
         ])
     }
     
-    private func updatePageControl() {
+    func updatePageControl() {
         if let currentViewController = pageViewController.viewControllers?.first,
            let currentIndex = pages.firstIndex(of: currentViewController) {
             pageControl.currentPage = currentIndex
@@ -79,6 +95,7 @@ class OnboardingCoordinator: NSObject, UIPageViewControllerDelegate {
     }
 }
 
+// MARK: - Navigation
 extension OnboardingCoordinator {
     func nextPage() {
         guard let currentVC = pageViewController.viewControllers?.first,
@@ -114,6 +131,6 @@ extension OnboardingCoordinator {
         // Replace with real app entry point
         let alert = UIAlertController(title: "Done!", message: "Onboarding finished.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
-        navigationController.present(alert, animated: true)
+        present(alert, animated: true)
     }
 }

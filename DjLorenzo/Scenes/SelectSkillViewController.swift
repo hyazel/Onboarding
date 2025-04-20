@@ -9,11 +9,12 @@ import UIKit
 import SwiftUI
 import DesignSystem
 import Factory
+import DataDomain
 
-class SelectSkillViewController: UIViewController {
+final class SelectSkillViewController: UIViewController {
     // MARK: - Injection
     @Injected(\RepositoryContainer.userRepository) private var userRepository
-    private let coordinator: OnboardingCoordinator
+    @WeakLazyInjected(\NavigationContainer.onBoardingCoordinator) private var coordinator
     
     // MARK: - UI components
     private let radioGroup: RadioGroup
@@ -53,7 +54,7 @@ class SelectSkillViewController: UIViewController {
     
     private lazy var continueButton: UIButton = {
         let button = PrimaryButtonFactory.makeContinueButton {
-            self.coordinator.nextPage()
+            self.coordinator?.nextPage()
         }
         button.isEnabled = false
         return button
@@ -83,8 +84,7 @@ class SelectSkillViewController: UIViewController {
     }()
     
     // MARK: - Init
-    init(coordinator: OnboardingCoordinator) {
-        self.coordinator = coordinator
+    init() {
         self.radioGroup = RadioGroup(options: DJLevel.allCases.map { $0.rawValue })
         super.init(nibName: nil, bundle: nil)
         self.radioGroup.delegate = self
@@ -99,8 +99,6 @@ class SelectSkillViewController: UIViewController {
         view.backgroundColor = .black
         setupLayout()
     }
-    
-    
 }
 
 // MARK: - UI Setup
@@ -166,5 +164,5 @@ extension SelectSkillViewController: RadioGroupDelegate {
 }
 
 #Preview {
-    SelectSkillViewController(coordinator: OnboardingCoordinator(navigationController: UINavigationController()))
+    SelectSkillViewController()
 }

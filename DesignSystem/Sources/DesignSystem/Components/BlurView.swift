@@ -1,5 +1,5 @@
 //
-//  Untitled.swift
+//  BlurView.swift
 //  DjLorenzo
 //
 //  Created by Laurent Droguet on 14/04/2025.
@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct BlurView: View {
-    var body: some View {
+public struct BlurView: View {
+    public var body: some View {
         ZStack {
             ForEach(0..<40) { _ in
                 Circle()
@@ -27,8 +27,11 @@ struct BlurView: View {
                      minHeight: 300).border(.red)
 }
 
-public func makeBlurUIView() -> UIView {
-    let blurView = BlurView()
-    let hostingController = UIHostingController(rootView: blurView)
-    return hostingController.view
+// MARK: - Factory
+public extension BlurView {
+    static func makeUIView() -> UIView {
+        let blurView = BlurView()
+        let hostingController = UIHostingController(rootView: blurView)
+        return hostingController.view
+    }
 }

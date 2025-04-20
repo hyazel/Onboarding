@@ -1,13 +1,23 @@
+//
+//  Skill3OnboardingViewController.swift
+//  DjLorenzo
+//
+//  Created by Laurent Droguet on 12/04/2025.
+//
+
 import UIKit
 import SwiftUI
 import DesignSystem
 import Player
+import Factory
 
 class Skill3OnboardingViewController: BaseViewController {
     
-    private let coordinator: OnboardingCoordinator
-    private let player = Player()
+    // MARK: - Injection
+    @WeakLazyInjected(\NavigationContainer.onBoardingCoordinator) private var coordinator
+    @Injected(\PlayerContainer.player) private var player
     
+    // MARK: - UI components
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -43,7 +53,7 @@ class Skill3OnboardingViewController: BaseViewController {
     
     private lazy var continueButton: UIButton = {
         let button = PrimaryButtonFactory.makeContinueButton {
-            self.coordinator.nextPage()
+            self.coordinator?.nextPage()
         }
         button.isEnabled = false
         return button
@@ -64,8 +74,16 @@ class Skill3OnboardingViewController: BaseViewController {
         return stackView
     }()
     
-    init(coordinator: OnboardingCoordinator) {
-        self.coordinator = coordinator
+    private lazy var blurLightView: UIView = {
+        let view = BlurView.makeUIView()
+        view.alpha = 0
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .clear
+        return view
+    }()
+    
+    // MARK: - Init & lifecycle
+    init() {
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -76,49 +94,30 @@ class Skill3OnboardingViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let blurUIView = makeBlurUIView()
-            blurUIView.translatesAutoresizingMaskIntoConstraints = false
-            blurUIView.backgroundColor = .clear // Important pour transparence
-
-            view.addSubview(blurUIView)
-
-            
-        
-        
         setupLayout()
-        setupLights()
         playIntroSample()
-        
-        NSLayoutConstraint.activate([
-            blurUIView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            blurUIView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            blurUIView.centerXAnchor.constraint(equalTo: djDeckImageView.centerXAnchor),
-            blurUIView.centerYAnchor.constraint(equalTo: djDeckImageView.centerYAnchor, constant: -50)
-        ])
-        
-        blurUIView.alpha = 0
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            UIView.animate(withDuration: 15.0) {
-                blurUIView.alpha = 0.5
-            }
-        }
-        
-        
-        // Réactiver le bouton après 15 secondes
-        DispatchQueue.main.asyncAfter(deadline: .now() + 15.0) { [weak self] in
-            self?.continueButton.isEnabled = true
-        }
+        animateLights()
+        continueButtonAnimation()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
     }
     
-    private func setupLayout() {
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        player.stop()
+    }
+}
+
+// MARK: - UI setup
+private extension Skill3OnboardingViewController {
+    func setupLayout() {
         view.addSubview(scrollView)
         view.addSubview(continueButton)
         scrollView.addSubview(stackView)
+        
+        view.addSubview(blurLightView)
         
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -137,6 +136,11 @@ class Skill3OnboardingViewController: BaseViewController {
             
             djDeckImageView.heightAnchor.constraint(equalToConstant: 300),
             djDeckImageView.widthAnchor.constraint(equalTo: stackView.widthAnchor),
+            
+            blurLightView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            blurLightView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            blurLightView.centerXAnchor.constraint(equalTo: djDeckImageView.centerXAnchor),
+            blurLightView.centerYAnchor.constraint(equalTo: djDeckImageView.centerYAnchor, constant: -50)
         ])
         
         let centerY = stackView.centerYAnchor.constraint(equalTo: scrollView.centerYAnchor)
@@ -149,30 +153,39 @@ class Skill3OnboardingViewController: BaseViewController {
         
         stackView.topAnchor.constraint(greaterThanOrEqualTo: scrollView.contentLayoutGuide.topAnchor).isActive = true
         stackView.bottomAnchor.constraint(lessThanOrEqualTo: scrollView.contentLayoutGuide.bottomAnchor).isActive = true
+        
+    }
+}
+
+// MARK: - Animation
+private extension Skill3OnboardingViewController {
+    func animateLights() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            UIView.animate(withDuration: 15.0) {
+                self.blurLightView.alpha = 0.5
+            }
+        }
     }
     
-    private func playIntroSample() {
+    func continueButtonAnimation() {
+        // Réactiver le bouton après 15 secondes
+        DispatchQueue.main.asyncAfter(deadline: .now() + 15.0) { [weak self] in
+            self?.continueButton.isEnabled = true
+        }
+    }
+}
+
+// MARK: - Player
+private extension Skill3OnboardingViewController {
+    func playIntroSample() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             SamplePlayer.play(.stageIntro)
         }
     }
-    
-    private func setupLights() {
-        // Implementation of setupLights method
-    }
-    
-    private func animateLights() {
-        // Implementation of animateLights method
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        player.stop()
-    }
 }
 
 #Preview {
-    Skill3OnboardingViewController(coordinator: OnboardingCoordinator(navigationController: .init()))
+    Skill3OnboardingViewController()
 }
 
 

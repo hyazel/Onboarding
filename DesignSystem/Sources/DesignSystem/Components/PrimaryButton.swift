@@ -1,19 +1,18 @@
+//
+//  PrimaryButton.swift
+//  DjLorenzo
+//
+//  Created by Laurent Droguet on 14/04/2025.
+//
+
 import UIKit
 import SwiftUI
-
-
-public struct PrimaryButtonFactory {
-    @MainActor
-    public static func makeContinueButton(action: @escaping () -> Void) -> PrimaryButton {
-        PrimaryButton(title: "Continue", action: action)
-    }
-}
 
 public final class PrimaryButton: UIButton {
     
     private var action: (() -> Void)?
     
-    public init(title: String, action: (() -> Void)?) {
+    public init(title: String, action: (() -> Void)? = nil) {
         self.action = action
         super.init(frame: .zero)
         setTitle(title, for: .normal)
@@ -28,10 +27,9 @@ public final class PrimaryButton: UIButton {
         titleLabel?.font = .systemFont(ofSize: 20, weight: .medium)
         backgroundColor = .systemBlue
         setTitleColor(.white, for: .normal)
-        layer.cornerRadius = 12
+        layer.cornerRadius = .radiusL
         translatesAutoresizingMaskIntoConstraints = false
         
-        // Hauteur par défaut
         heightAnchor.constraint(equalToConstant: 50).isActive = true
         
         addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
@@ -54,17 +52,16 @@ public final class PrimaryButton: UIButton {
             self.layer.opacity = isEnabled ? 1 : 0.5
         }
     }
-    
-    func setFullWidth(in view: UIView, withMargins margins: CGFloat = 20) {
-        NSLayoutConstraint.activate([
-            leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: margins),
-            trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -margins)
-        ])
-    }
 }
 
 #Preview {
-    PrimaryButton(title: "Continue") {
-        
+    PrimaryButton(title: "Continue")
+}
+
+// MARK: - Factory
+public struct PrimaryButtonFactory {
+    @MainActor
+    public static func makeContinueButton(action: @escaping () -> Void) -> PrimaryButton {
+        PrimaryButton(title: "Continue", action: action)
     }
 }

@@ -7,10 +7,11 @@
 
 import UIKit
 import DesignSystem
+import Factory
 
 final class WelcomeOnboardingViewController: BaseViewController {
     // MARK: - Injection
-    private let coordinator: OnboardingCoordinator
+    @WeakLazyInjected(\NavigationContainer.onBoardingCoordinator) private var coordinator
     
     // MARK: - UI components
     private let logoImageView: UIImageView = {
@@ -32,7 +33,7 @@ final class WelcomeOnboardingViewController: BaseViewController {
     
     private lazy var continueButton: PrimaryButton = {
         PrimaryButtonFactory.makeContinueButton {
-            self.coordinator.nextPage()
+            self.coordinator?.nextPage()
         }
     }()
     
@@ -46,8 +47,7 @@ final class WelcomeOnboardingViewController: BaseViewController {
     }()
     
     // MARK: - Init
-    init(coordinator: OnboardingCoordinator) {
-        self.coordinator = coordinator
+    init() {
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -87,5 +87,5 @@ private extension WelcomeOnboardingViewController {
 }
 
 #Preview {
-    WelcomeOnboardingViewController(coordinator: OnboardingCoordinator(navigationController: UINavigationController()))
+    WelcomeOnboardingViewController()
 }

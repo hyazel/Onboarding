@@ -1,19 +1,19 @@
 import Foundation
 
-enum DJLevel: String, CaseIterable {
+public enum DJLevel: String, CaseIterable {
     case beginner = "I'm new to DJing"
     case intermediate = "I've used DJ apps before"
     case professional = "I'm a professional DJ"
 }
 
 
-protocol UserRepository {
+public protocol UserRepository {
     func saveDJLevel(_ level: DJLevel)
     func getDJLevel() -> DJLevel?
     func clearDJLevel()
 }
 
-class UserRepositoryImpl: UserRepository {
+final class UserRepositoryImpl: UserRepository {
     private enum Keys {
         static let djLevel = "user_dj_level"
     }

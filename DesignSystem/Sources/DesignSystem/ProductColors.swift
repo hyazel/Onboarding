@@ -14,6 +14,7 @@ public extension UIColor {
     }
     
     enum Background {
+        public static let accentPrimary = UIColor(resource: .blue100)
         public static let inverted = UIColor(resource: .neutral00)
         @MainActor public static let gradientLayer: CAGradientLayer = {
             let layer = CAGradientLayer()
@@ -27,25 +28,4 @@ public extension UIColor {
             return layer
         }()
     }
-//    
-//    enum Border {
-//        public static let primary = Color(.neutral170)
-//        public static let secondary = Color(.green140)
-//        public static let tertiary = Color(.neutral90)
-//        public static let accentPrimary = Color(.green100)
-//        public static let accentSecondary = Color(.green140)
-//    }
-//    
-//    enum Icon {
-//        public static let primary = Color(.white)
-//        public static let secondary = Color(.neutral100)
-//        public static let tertiary = Color(.neutral80)
-//        public static let inverted = Color(.neutral200)
-//        public static let disabled = Color(.neutral60)
-//        public static let accentPrimary = Color(.green100)
-//    }
 }
-
-//extension Bundle {
-//    public static var designBundle: Bundle = .module
-//}

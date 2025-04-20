@@ -1,3 +1,10 @@
+//
+//  VolumeSlider.swift
+//  DjLorenzo
+//
+//  Created by Laurent Droguet on 14/04/2025.
+//
+
 import UIKit
 import SwiftUI
 
@@ -33,7 +40,7 @@ public final class VolumeSlider: UISlider {
         // Draw track background
         let context = UIGraphicsGetCurrentContext()
         context?.setFillColor(UIColor.gray.cgColor)
-        let trackPath = UIBezierPath(roundedRect: trackRect, cornerRadius: 8)
+        let trackPath = UIBezierPath(roundedRect: trackRect, cornerRadius: .radiusS)
         trackPath.fill()
         
         let trackImage = UIGraphicsGetImageFromCurrentImageContext()

@@ -1,3 +1,10 @@
+//
+//  RadioButton.swift
+//  DjLorenzo
+//
+//  Created by Laurent Droguet on 14/04/2025.
+//
+
 import UIKit
 
 public class RadioButton: UIControl {
@@ -5,7 +12,7 @@ public class RadioButton: UIControl {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
-        label.font = .systemFont(ofSize: 17)
+        label.font = .bodyL
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -14,7 +21,7 @@ public class RadioButton: UIControl {
         let view = UIView()
         view.layer.borderWidth = 2
         view.layer.borderColor = UIColor.systemGray.cgColor
-        view.layer.cornerRadius = 12
+        view.layer.cornerRadius = .radiusL
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -50,7 +57,7 @@ public class RadioButton: UIControl {
     
     private func setup() {
         backgroundColor = UIColor(white: 1, alpha: 0.25)
-        layer.cornerRadius = 12
+        layer.cornerRadius = .radiusL
         layer.borderWidth = 0
         layer.masksToBounds = true
         
@@ -60,20 +67,20 @@ public class RadioButton: UIControl {
         
         NSLayoutConstraint.activate([
             // Radio circle
-            radioCircle.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            radioCircle.leadingAnchor.constraint(equalTo: leadingAnchor, constant: .spacingM),
             radioCircle.centerYAnchor.constraint(equalTo: centerYAnchor),
-            radioCircle.widthAnchor.constraint(equalToConstant: 24),
-            radioCircle.heightAnchor.constraint(equalToConstant: 24),
+            radioCircle.widthAnchor.constraint(equalToConstant: .sizeS),
+            radioCircle.heightAnchor.constraint(equalToConstant: .sizeS),
             
             // Checkmark
             checkmarkImageView.centerXAnchor.constraint(equalTo: radioCircle.centerXAnchor),
             checkmarkImageView.centerYAnchor.constraint(equalTo: radioCircle.centerYAnchor),
-            checkmarkImageView.widthAnchor.constraint(equalToConstant: 12),
-            checkmarkImageView.heightAnchor.constraint(equalToConstant: 12),
+            checkmarkImageView.widthAnchor.constraint(equalToConstant: .sizeXS),
+            checkmarkImageView.heightAnchor.constraint(equalToConstant: .sizeXS),
             
             // Title
-            titleLabel.leadingAnchor.constraint(equalTo: radioCircle.trailingAnchor, constant: 12),
-            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            titleLabel.leadingAnchor.constraint(equalTo: radioCircle.trailingAnchor, constant: .spacingM),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -.spacingM),
             titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
             
             // Button height

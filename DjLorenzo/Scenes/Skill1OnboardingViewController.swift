@@ -1,12 +1,19 @@
+//
+//  Skill1OnboardingViewController.swift
+//  DjLorenzo
+//
+//  Created by Laurent Droguet on 12/04/2025.
+//
+
 import UIKit
 import SwiftUI
 import DesignSystem
 import Player
 import Factory
 
-class Skill1OnboardingViewController: BaseViewController {
+final class Skill1OnboardingViewController: BaseViewController {
     // MARK: - Injection
-    private let coordinator: OnboardingCoordinator
+    @WeakLazyInjected(\NavigationContainer.onBoardingCoordinator) private var coordinator
     @Injected(\PlayerContainer.player) private var player
     
     // MARK: - Local variables
@@ -54,7 +61,7 @@ class Skill1OnboardingViewController: BaseViewController {
     
     private lazy var continueButton: UIButton = {
         let button = PrimaryButtonFactory.makeContinueButton {
-            self.coordinator.nextPage()
+            self.coordinator?.nextPage()
         }
         
         button.isEnabled = false
@@ -89,8 +96,7 @@ class Skill1OnboardingViewController: BaseViewController {
     }()
     
     // MARK: - Init and view lifecycle
-    init(coordinator: OnboardingCoordinator) {
-        self.coordinator = coordinator
+    init() {
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -123,7 +129,7 @@ private extension Skill1OnboardingViewController {
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: continueButton.topAnchor, constant: -32),
+            scrollView.bottomAnchor.constraint(equalTo: continueButton.topAnchor, constant: 0),
             
             // StackView constraints
             stackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor, constant: .spacingXL),
@@ -143,6 +149,7 @@ private extension Skill1OnboardingViewController {
             // Slider width and height
             volumeSlider.widthAnchor.constraint(equalTo: vinylImageView.widthAnchor),
             volumeSlider.heightAnchor.constraint(equalToConstant: 48),
+            volumeSlider.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -.spacingL),
             
             // Labels width
             titleLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
@@ -223,5 +230,5 @@ private extension Skill1OnboardingViewController {
 }
 
 #Preview {
-    Skill1OnboardingViewController(coordinator: OnboardingCoordinator(navigationController: UINavigationController()))
+    Skill1OnboardingViewController()
 } 

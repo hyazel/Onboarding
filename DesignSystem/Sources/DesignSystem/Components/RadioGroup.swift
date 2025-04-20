@@ -1,3 +1,10 @@
+//
+//  RadioGroup.swift
+//  DjLorenzo
+//
+//  Created by Laurent Droguet on 14/04/2025.
+//
+
 import UIKit
 
 public protocol RadioGroupDelegate: AnyObject {
@@ -10,7 +17,7 @@ public class RadioGroup: UIView {
     private let stackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
-        stack.spacing = 16
+        stack.spacing = .spacingM
         stack.alignment = .fill
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
