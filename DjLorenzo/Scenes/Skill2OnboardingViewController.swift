@@ -30,7 +30,7 @@ final class Skill2OnboardingViewController: BaseViewController {
     
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Retrouve tes\n habitudes"
+        label.text = "Remember the feeling ?"
         label.numberOfLines = 2
         label.textColor = .Text.primary
         label.textAlignment = .center
@@ -224,6 +224,12 @@ private extension Skill2OnboardingViewController {
         sender.value = roundedValue
         player.volume = roundedValue
         
+        if sender.value > 0 {
+            startVinylAnimation()
+        } else {
+            stopVinylAnimation()
+        }
+        
         if roundedValue > 0.5 {
             hasReachedHalfVolume = true
         }
@@ -268,7 +274,7 @@ private extension Skill2OnboardingViewController {
             self.subtitleLabel.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
             self.subtitleLabel.alpha = 0
         }) { _ in
-            self.titleLabel.text = "Yeah"
+            self.titleLabel.text = "Yeah ! \n You rock"
             self.subtitleLabel.text = "You've made your first DJ move"
             
             UIView.animate(withDuration: 0.3) {

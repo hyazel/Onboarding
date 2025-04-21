@@ -11,7 +11,7 @@ import DesignSystem
 import Factory
 import DataDomain
 
-final class SelectSkillViewController: UIViewController {
+final class SelectSkillViewController: BaseViewController {
     // MARK: - Injection
     @Injected(\RepositoryContainer.userRepository) private var userRepository
     @WeakLazyInjected(\NavigationContainer.onBoardingCoordinator) private var coordinator

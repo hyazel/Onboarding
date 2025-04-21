@@ -1,3 +1,10 @@
+//
+//  Player.swift
+//  DjLorenzo
+//
+//  Created by Laurent Droguet on 14/04/2025.
+//
+
 import Foundation
 import AVFoundation
 
@@ -13,10 +20,6 @@ public extension Player {
         set { audioPlayer?.volume = newValue }
     }
     
-    var isPlaying: Bool {
-        audioPlayer?.isPlaying ?? false
-    }
-    
     func loadTrack(named name: String, extension ext: String = "mp3") throws {
         guard let url = Bundle.module.url(forResource: name, withExtension: ext) else {
             throw PlayerError.trackNotFound
@@ -25,6 +28,7 @@ public extension Player {
         do {
             audioPlayer = try AVAudioPlayer(contentsOf: url)
             audioPlayer?.prepareToPlay()
+            
         } catch {
             throw PlayerError.failedToLoadTrack(error)
         }
@@ -51,37 +55,3 @@ extension Player {
         case failedToLoadTrack(Error)
     }
 }
-
-// MARK: - Usage Example
-extension Player {
-    static func example() {
-        let player = Player()
-        
-        do {
-            // Load track from bundle
-            try player.loadTrack(named: "song", extension: "mp3")
-            
-            // Set volume (0.0 to 1.0)
-            player.volume = 0.8
-            
-            // Play
-            player.play()
-            
-            // Check if playing
-            if player.isPlaying {
-                // Pause
-                player.pause()
-            }
-            
-            // Stop and reset to beginning
-            player.stop()
-            
-        } catch Player.PlayerError.trackNotFound {
-            print("Track not found in bundle")
-        } catch Player.PlayerError.failedToLoadTrack(let error) {
-            print("Failed to load track:", error)
-        } catch {
-            print("Unknown error:", error)
-        }
-    }
-} 

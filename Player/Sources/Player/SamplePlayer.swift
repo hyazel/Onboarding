@@ -1,3 +1,10 @@
+//
+//  SamplePlayer.swift
+//  DjLorenzo
+//
+//  Created by Laurent Droguet on 14/04/2025.
+//
+
 import Foundation
 import AudioToolbox
 

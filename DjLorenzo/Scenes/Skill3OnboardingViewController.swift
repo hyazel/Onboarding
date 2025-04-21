@@ -26,7 +26,7 @@ class Skill3OnboardingViewController: BaseViewController {
     
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Crowd detected"
+        label.text = "Crowd detected 🎧"
         label.textColor = .Text.primary
         label.textAlignment = .center
         label.font = .headingL
@@ -170,13 +170,13 @@ private extension Skill3OnboardingViewController {
     
     func continueButtonAnimation() {
         // Réactiver le bouton après 15 secondes
-        DispatchQueue.main.asyncAfter(deadline: .now() + 15.0) { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) { [weak self] in
             self?.continueButton.isEnabled = true
         }
     }
     
     func animateTextAfterDelay() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 15) { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 10) { [weak self] in
             self?.animateTextChange()
         }
     }

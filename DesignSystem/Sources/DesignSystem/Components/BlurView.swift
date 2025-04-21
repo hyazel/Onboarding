@@ -15,7 +15,8 @@ public struct BlurView: View {
                     .fill(Color.pink)
                     .frame(width: 64)
                     .blur(radius: 60)
-                    .offset(x: CGFloat(Int.random(in: -100...100)), y: CGFloat(Int.random(in: -100...100)))
+                    .offset(x: CGFloat(Int.random(in: -100...100)),
+                            y: CGFloat(Int.random(in: -100...100)))
             }
             
         }
@@ -24,7 +25,7 @@ public struct BlurView: View {
 
 #Preview {
     BlurView().frame(minWidth: 500,
-                     minHeight: 300).border(.red)
+                     minHeight: 300)
 }
 
 // MARK: - Factory

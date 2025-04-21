@@ -187,16 +187,19 @@ private extension Skill1OnboardingViewController {
     @objc func volumeChanged(_ sender: UISlider) {
         player.volume = sender.value
         
+        if sender.value > 0 {
+            startVinylAnimation()
+        } else {
+            stopVinylAnimation()
+        }
+        
         if sender.value >= 1.0 && !hasReachedMaxVolume {
             hasReachedMaxVolume = true
             animateTextChange()
         }
         continueButton.isEnabled = hasReachedMaxVolume
     }
-}
-
-// MARK: - Animations
-private extension Skill1OnboardingViewController {
+    
     func startVinylAnimation() {
         let duration = volumeSlider.value == 0 ? 0 : max(8 - (volumeSlider.value * 6), 2)
         vinylRotationAnimation.duration = CFTimeInterval(duration)
