@@ -176,7 +176,7 @@ private extension Skill1OnboardingViewController {
 private extension Skill1OnboardingViewController {
     func loadAudio() {
         do {
-            try player.loadTrack(named: "track")
+            try player.loadTrack(named: "chouchou")
             player.play()
             player.volume = volumeSlider.value
         } catch {

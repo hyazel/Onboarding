@@ -162,7 +162,7 @@ private extension Skill3OnboardingViewController {
 private extension Skill3OnboardingViewController {
     func animateLights() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            UIView.animate(withDuration: 15.0) {
+            UIView.animate(withDuration: 17.0) {
                 self.blurLightView.alpha = 0.5
             }
         }
@@ -170,13 +170,13 @@ private extension Skill3OnboardingViewController {
     
     func continueButtonAnimation() {
         // Réactiver le bouton après 15 secondes
-        DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 17.0) { [weak self] in
             self?.continueButton.isEnabled = true
         }
     }
     
     func animateTextAfterDelay() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 10) { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 17) { [weak self] in
             self?.animateTextChange()
         }
     }
@@ -188,8 +188,8 @@ private extension Skill3OnboardingViewController {
             self.subtitleLabel.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
             self.subtitleLabel.alpha = 0
         }) { _ in
-            self.titleLabel.text = "This is it"
-            self.subtitleLabel.text = "Make them dance"
+            self.titleLabel.text = "You’re live."
+            self.subtitleLabel.text = "Showtime."
             
             UIView.animate(withDuration: 0.3) {
                 self.titleLabel.transform = .identity

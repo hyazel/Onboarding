@@ -16,7 +16,7 @@ public enum Sample: String {
     
     var soundID: SystemSoundID {
         var id: SystemSoundID = 0
-        if let path = Bundle.main.path(forResource: self.rawValue, ofType: "wav") {
+        if let path = Bundle.module.path(forResource: self.rawValue, ofType: "mp3") {
             AudioServicesCreateSystemSoundID(URL(fileURLWithPath: path) as CFURL, &id)
         }
         return id

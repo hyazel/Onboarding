@@ -38,6 +38,7 @@ final class SelectSkillViewController: BaseViewController {
         label.textColor = .Text.primary
         label.textAlignment = .center
         label.font = .headingL
+        label.numberOfLines = 2
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
