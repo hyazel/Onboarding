@@ -99,6 +99,7 @@ class Skill3OnboardingViewController: BaseViewController {
         animateLights()
         continueButtonAnimation()
         animateTextAfterDelay()
+        startLoadingAnimation()
     }
     
     override func viewDidLayoutSubviews() {
@@ -188,7 +189,7 @@ private extension Skill3OnboardingViewController {
             self.subtitleLabel.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
             self.subtitleLabel.alpha = 0
         }) { _ in
-            self.titleLabel.text = "You’re live."
+            self.titleLabel.text = "You're live."
             self.subtitleLabel.text = "Showtime."
             
             UIView.animate(withDuration: 0.3) {
@@ -196,6 +197,26 @@ private extension Skill3OnboardingViewController {
                 self.titleLabel.alpha = 1
                 self.subtitleLabel.transform = .identity
                 self.subtitleLabel.alpha = 1
+            }
+        }
+    }
+    
+    func startLoadingAnimation() {
+        let loadingText = "Deck loading"
+        var dots = ""
+        
+        Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { [weak self] timer in
+            guard let self else {
+                timer.invalidate()
+                return
+            }
+            
+            dots = dots.count < 3 ? dots + "." : ""
+            
+            self.subtitleLabel.text = loadingText + dots
+            
+            if self.continueButton.isEnabled {
+                timer.invalidate()
             }
         }
     }
